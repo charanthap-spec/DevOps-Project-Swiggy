@@ -2,7 +2,7 @@ pipeline{
     agent any
     tools{
         jdk 'jdk17'
-        nodejs 'node20'
+        nodejs 'node23'
     }
     environment {
         SCANNER_HOME=tool 'sonar-scanner'
@@ -54,7 +54,7 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker-creds', toolName: 'docker'){   
                        sh "docker build -t swiggy ."
-                       sh "docker tag swiggy kastrov/swiggy:latest "
+                       sh "docker tag swiggy saiv/swiggy:latest "
                        sh "docker push kastrov/swiggy:latest "
                     }
                 }
@@ -62,7 +62,7 @@ pipeline{
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image kastrov/swiggy:latest > trivy.txt" 
+                sh "trivy image saiv/swiggy:latest > trivy.txt" 
             }
         }
         stage('Deploy to container'){
