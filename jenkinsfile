@@ -73,8 +73,8 @@ pipeline {
                         toolName: 'docker'
                     ) {
                         sh 'docker build -t swiggy .'
-                        sh 'docker tag swiggy charanjo/swiggy:latest'
-                        sh 'docker push charanjo/swiggy:latest'
+                        sh 'docker tag swiggy charanjo/swiggy-ci-cd:latest'
+                        sh 'docker push charanjo/swiggy-ci-cd:latest'
                     }
                 }
             }
@@ -82,13 +82,13 @@ pipeline {
 
         stage('TRIVY Image Scan') {
             steps {
-                sh 'trivy image charanjo/swiggy:latest > trivy.txt'
+                sh 'trivy image charanjo/swiggy-ci-cd:latest > trivy.txt'
             }
         }
 
         stage('Deploy to Container') {
             steps {
-                sh 'docker run -d --name swiggy -p 3000:3000 charanjo/swiggy:latest'
+                sh 'docker run -d --name swiggy -p 3000:3000 charanjo/swiggy-ci-cd:latest'
             }
         }
     }
